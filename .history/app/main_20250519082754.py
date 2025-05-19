@@ -39,24 +39,12 @@ def get_posts():
 
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED, tags=["Posts"])
+@app.post("/posts", status_code=status.HTTP_201_CREATED)
 def create_posts(post: Post):
-    cur.execute(
-    "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
-    (post.tittle, post.content, post.published)
-)
-    new_post = cur.fetchone()
-    conn.commit() 
-    return {"data": new_post}    
+    cur.Execute(""""INSERT INTO posts (tittle, content, published) VALUES(% s, % s, % s) """, (post.tittle, post.content, post.published))
     
-
-@app.get("/posts/{id}")
-def get_post(id: int):  
-    cur.execute("""SELECT * FROM posts WHERE id = %s""", (str(id),))
-    post = cur.fetchone()
-    if not post:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} was not found")
-    return {"post_detail": post}  
+    return {"data": "createde post!"}    
+    
     
 
 

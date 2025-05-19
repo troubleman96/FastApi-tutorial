@@ -39,7 +39,7 @@ def get_posts():
 
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED, tags=["Posts"])
+@app.post("/posts", status_code=status.HTTP_201_CREATED, tags=["posts"])
 def create_posts(post: Post):
     cur.execute(
     "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
