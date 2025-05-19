@@ -71,7 +71,7 @@ def delete_post(id: int):
 
 @app.put("/posts/{id}", tags = ["Posts"])
 def update_post(id: int, post: Post):
-    cur.execute("UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *",
+    cur.execute("UPDATE posts SET tittle=%s, content=%s, published=%s WHERE id = %s RETURNING *",
                 (post.tittle, post.content, post.published, str(id)))
     updated_post = cur.fetchone()
     conn.commit()

@@ -69,13 +69,6 @@ def delete_post(id: int):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
     
 
-@app.put("/posts/{id}", tags = ["Posts"])
+@app.put("/post/{id}", tags = ["Posts"])
 def update_post(id: int, post: Post):
-    cur.execute("UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *",
-                (post.tittle, post.content, post.published, str(id)))
-    updated_post = cur.fetchone()
-    conn.commit()
-    if updated_post == None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Post with id: {id} does not exist")
-    return {"data": updated_post}
+    cur.execute("UPDATE posts SET tittle=%s, content=%s, published=%s WHERE id = %s RETURNING *",)
