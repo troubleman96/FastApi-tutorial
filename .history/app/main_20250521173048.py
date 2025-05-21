@@ -93,7 +93,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     
 
 @app.put("/posts/{id}", tags = ["Posts"])
-def update_post(id: int, updated_post: Post, db: Session = Depends(get_db)):
+def update_post(id: int, post: Post, db: Session = Depends(get_db)):
     #cur.execute("UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *",
                 #(post.tittle, post.content, post.published, str(id)))
     #updated_post = cur.fetchone()
@@ -107,7 +107,6 @@ def update_post(id: int, updated_post: Post, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Post with id: {id} does not exist")
     
-    post_query.update(updated_post.dict(), synchronize_session=False)
-    db.commit()
+    
 
-    return {"data": post_query.first()}
+    return {"data": updated_post}
