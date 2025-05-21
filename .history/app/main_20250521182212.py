@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
 from random import randrange
@@ -33,14 +33,14 @@ def root():
     return {"message": "Wagwaan"}
 
 
-@app.get("/posts", tags=["Posts"], response_model=list[schemas.Post]) #since they can back many, list will handle
+@app.get("/posts", tags=["Posts"])
 def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
-    return posts
+    return {"data": posts}
 
 
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED, tags=["Posts"], response_model=schemas.Post)
+@app.post("/posts", status_code=status.HTTP_201_CREATED, tags=["Posts"])
 def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
 #     cur.execute(
 #     "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
@@ -58,7 +58,7 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db)):
       return new_post    
     
 
-@app.get("/posts/{id}", tags = ["Posts"], response_model = schemas.Post)
+@app.get("/posts/{id}", tags = ["Posts"])
 def get_post(id: int, db: Session = Depends(get_db)):  
     #cur.execute("""SELECT * FROM posts WHERE id = %s""", (str(id),))
     #post = cur.fetchone()
@@ -67,7 +67,7 @@ def get_post(id: int, db: Session = Depends(get_db)):
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id: {id} was not found")
    
-    return post 
+    return {"post_detail": post}  
 
 
 @app.delete("/posts/{id}", tags = ["Posts"])
@@ -86,7 +86,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
     
 
-@app.put("/posts/{id}", tags = ["Posts"], response_model = schemas.Post)
+@app.put("/posts/{id}", tags = ["Posts"])
 def update_post(id: int, updated_post: schemas.PostCreate, db: Session = Depends(get_db)):
     #cur.execute("UPDATE posts SET title=%s, content=%s, published=%s WHERE id = %s RETURNING *",
                 #(post.tittle, post.content, post.published, str(id)))

@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
 from random import randrange
@@ -33,7 +33,7 @@ def root():
     return {"message": "Wagwaan"}
 
 
-@app.get("/posts", tags=["Posts"], response_model=list[schemas.Post]) #since they can back many, list will handle
+@app.get("/posts", tags=["Posts"])
 def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
