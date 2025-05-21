@@ -54,8 +54,7 @@ def create_posts(post: Post, db: Session = Depends(get_db)):
 # )
 #     new_post = cur.fetchone()
 #     conn.commit() 
-      new_post = models.Post(title=post.title, content=post.content, published=post.published)  
-      return {"data": new_post}    
+    return {"data": new_post}    
     
 
 @app.get("/posts/{id}", tags = ["Posts"])

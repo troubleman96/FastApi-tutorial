@@ -48,14 +48,13 @@ def get_posts(db: Session = Depends(get_db)):
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED, tags=["Posts"])
 def create_posts(post: Post, db: Session = Depends(get_db)):
-#     cur.execute(
-#     "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
-#     (post.tittle, post.content, post.published)
-# )
-#     new_post = cur.fetchone()
-#     conn.commit() 
-      new_post = models.Post(title=post.title, content=post.content, published=post.published)  
-      return {"data": new_post}    
+    cur.execute(
+    "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
+    (post.tittle, post.content, post.published)
+)
+    new_post = cur.fetchone()
+    conn.commit() 
+    return {"data": new_post}    
     
 
 @app.get("/posts/{id}", tags = ["Posts"])

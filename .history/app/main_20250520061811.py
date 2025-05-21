@@ -3,20 +3,16 @@ from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
 from pydantic import BaseModel
 from random import randrange
-from sqlalchemy.orm import Session
 import time
-from .database import engine, get_db
-from fastapi import Depends
 import psycopg2
 from psycopg2.extras import RealDictCursor
+
 from app import models
 
    
 models.Base.metadata.create_all(bind=engine)  
 
 app = FastAPI()
-
-   
 
 class Post(BaseModel):
     tittle: str
@@ -40,22 +36,22 @@ def root():
 
 
 @app.get("/posts", tags=["Posts"])
-def get_posts(db: Session = Depends(get_db)):
-    posts = db.query(models.Post).all()
+def get_posts():
+    cur.execute("""SELECT * FROM posts""")
+    posts = cur.fetchall()
     return {"data": posts}
 
 
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED, tags=["Posts"])
-def create_posts(post: Post, db: Session = Depends(get_db)):
-#     cur.execute(
-#     "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
-#     (post.tittle, post.content, post.published)
-# )
-#     new_post = cur.fetchone()
-#     conn.commit() 
-      new_post = models.Post(title=post.title, content=post.content, published=post.published)  
-      return {"data": new_post}    
+def create_posts(post: Post):
+    cur.execute(
+    "INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING *",
+    (post.tittle, post.content, post.published)
+)
+    new_post = cur.fetchone()
+    conn.commit() 
+    return {"data": new_post}    
     
 
 @app.get("/posts/{id}", tags = ["Posts"])
