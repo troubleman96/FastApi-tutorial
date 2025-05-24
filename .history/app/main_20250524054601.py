@@ -3,11 +3,12 @@ from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.params import Body
 from random import randrange
 from sqlalchemy.orm import Session
+import time
 from .database import engine, get_db
 from fastapi import Depends
 import psycopg2
-from app import models
-from .routers import user, post
+from psycopg2.extras import RealDictCursor
+from app import models, schemas, utilis
 
 
 models.Base.metadata.create_all(bind=engine)  
@@ -25,10 +26,6 @@ app = FastAPI()
 #     print("Connection to DB failed")
 #     print("Error: ", error)
 #     time.sleep(2)    
-
-
-app.include_router(post.router)
-app.include_router(user.router)
 
 
 @app.get("/")
