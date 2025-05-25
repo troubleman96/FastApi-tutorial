@@ -11,7 +11,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[schemas.Post]) #since they can back many, list will handle
-def get_posts(db: Session = Depends(get_db), user_id:int = Depends(oauth2.get_current_user)):
+def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post).all()
     return posts
 
@@ -37,7 +37,7 @@ def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db), user_i
     
 
 @router.get("/{id}", response_model = schemas.Post)
-def get_post(id: int, db: Session = Depends(get_db), user_id: int = Depends(oauth2.get_current_user)):  
+def get_post(id: int, db: Session = Depends(get_db)):  
     #cur.execute("""SELECT * FROM posts WHERE id = %s""", (str(id),))
     #post = cur.fetchone()
     post = db.query(models.Post).filter(models.Post.id == id).first()
