@@ -4,7 +4,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
-from . import database, schemas, models
+from . import database
+
 oauth_scheme = OAuth2PasswordBearer(tokenUrl="login") #this is the url that will be used to get the token
 
 #SECRECTKEY #Algorithm #expirationTime
@@ -42,11 +43,6 @@ def verify_access_token(token:str, credentials_exception):
 
 # this function will be used to get the current user from the token
 def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(database.get_db)):
-
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = f"could not validate credentials ", headers = {"WWW-AUTHENTICATE": "bearer"})
     
-    token = verify_access_token(token, credentials_exception)
-
-    user = db.query(models.User).filter(models.User.id == token.id).first()
-
-    return user
+    return verify_access_token(token, credentials_exception)

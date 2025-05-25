@@ -46,7 +46,7 @@ def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(d
     credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail = f"could not validate credentials ", headers = {"WWW-AUTHENTICATE": "bearer"})
     
     token = verify_access_token(token, credentials_exception)
-
+    
     user = db.query(models.User).filter(models.User.id == token.id).first()
 
-    return user
+    return 
