@@ -1,4 +1,4 @@
-from sqlalchemy import TIMESTAMP, Boolean, Column, ForeignKey, Integer, String, func
+from sqlalchemy import TIMESTAMP, Boolean, Column, Integer, String, func
 from .database import Base  
 
 class Post(Base):
