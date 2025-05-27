@@ -29,12 +29,9 @@ class Post(PostBase):
         orm_mode = True
         # This allows us to convert SQLAlchemy models to Pydantic models
 
-class PostOut(BaseModel):
+class PostOut(PostBase):
     Post: Post
-    votes: int  
-
-    class Config:
-        orm_mode = True      
+    votes: int        
 
 class UserCreate(BaseModel):
     email: EmailStr
