@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 from .. import models, schemas, oauth2
 from fastapi import APIRouter, Depends, Response, status, HTTPException
 from sqlalchemy.orm import Session
