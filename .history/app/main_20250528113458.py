@@ -2,22 +2,13 @@ from fastapi import FastAPI
 from .database import engine
 from app import models
 from .routers import user, post, auth, vote
-from fastapi.middleware.cors import CORSMiddleware
 
 
 #models.Base.metadata.create_all(bind=engine)  
 
 app = FastAPI()
 
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)   
+   
     
 # try:
 #     conn = psycopg2.connect(host="localhost", database="fastapi", user="postgres", password="darkknight", cursor_factory=RealDictCursor)
